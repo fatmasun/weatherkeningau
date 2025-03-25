@@ -58,6 +58,8 @@ def collect_weather_data():
 
 # Flask API route to fetch stored weather data
 @app.route('/weather', methods=['GET'])
+def home():
+    return "Weather data updating service is running!"
 def get_weather_data():
     try:
         connection = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
