@@ -76,4 +76,4 @@ def get_weather_data():
 if __name__ == "__main__":
     # Start the weather data fetching in a background thread
     threading.Thread(target=collect_weather_data, daemon=True).start()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
