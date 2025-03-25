@@ -1,7 +1,10 @@
-from flask import Flask, jsonify
-import requests
 import pymysql
+import requests
+from datetime import datetime
+import pytz
+import os
 import time
+from flask import Flask, jsonify
 import threading
 
 app = Flask(__name__)
@@ -29,8 +32,9 @@ def store_data(temp, humidity, wind_speed, timestamp):
         connection.commit()
         cursor.close()
         connection.close()
+        print(f"✅ Data stored: {timestamp} - Temp: {temp}°C, Humidity: {humidity}%, Wind Speed: {wind_speed} m/s")
     except Exception as e:
-        print("Database Error:", e)
+        print("❌ Database Error:", e)
 
 # Function to fetch weather data every 5 minutes
 def collect_weather_data():
@@ -41,20 +45,21 @@ def collect_weather_data():
             temp = data["main"]["temp"]
             humidity = data["main"]["humidity"]
             wind_speed = data["wind"]["speed"]
-            timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
+
+            # Get current time with timezone
+            tz = pytz.timezone("Asia/Kuching")  # Adjust timezone if needed
+            timestamp = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
 
             store_data(temp, humidity, wind_speed, timestamp)
-            print(f"Logged: {timestamp} - Temp: {temp}°C, Humidity: {humidity}%, Wind Speed: {wind_speed} m/s")
-
         else:
-            print("Error fetching weather data")
+            print("❌ Error fetching weather data")
 
         time.sleep(300)  # Wait for 5 minutes
 
 # Start the background thread for data collection
 threading.Thread(target=collect_weather_data, daemon=True).start()
 
-# Flask route to fetch stored data
+# Flask API route to fetch stored weather data
 @app.route('/weather', methods=['GET'])
 def get_weather_data():
     try:
