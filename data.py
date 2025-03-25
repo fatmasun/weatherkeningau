@@ -57,7 +57,7 @@ def collect_weather_data():
         time.sleep(300)  # Wait for 5 minutes
 
 # Start the background thread for data collection
-threading.Thread(target=collect_weather_data, daemon=True).start()
+# threading.Thread(target=collect_weather_data, daemon=True).start()
 
 # Flask API route to fetch stored weather data
 @app.route('/weather', methods=['GET'])
@@ -78,5 +78,5 @@ def get_weather_data():
 
 if _name_ == "_main_":
     # Start the weather data fetching in a background thread
-    threading.Thread(target=fetch_and_store_weather, daemon=True).start()
+    threading.Thread(target=collect_weather_data, daemon=True).start()
     app.run(host="0.0.0.0", port=5000, debug=True)
