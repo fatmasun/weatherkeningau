@@ -56,9 +56,6 @@ def collect_weather_data():
 
         time.sleep(300)  # Wait for 5 minutes
 
-# Start the background thread for data collection
-# threading.Thread(target=collect_weather_data, daemon=True).start()
-
 # Flask API route to fetch stored weather data
 @app.route('/weather', methods=['GET'])
 def get_weather_data():
@@ -76,7 +73,7 @@ def get_weather_data():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     # Start the weather data fetching in a background thread
     threading.Thread(target=collect_weather_data, daemon=True).start()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
