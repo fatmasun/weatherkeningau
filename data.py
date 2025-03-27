@@ -10,15 +10,15 @@ import threading
 app = Flask(__name__)
 
 # OpenWeatherMap API details
-API_KEY = "e82a4d76542a77e2cae25e5efacef03c"
+API_KEY = os.environ.get("API_KEY")
 CITY = "Keningau"
 URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric"
 
 # MySQL Database Connection (FreeSQLDatabase)
-DB_HOST = "sql12.freesqldatabase.com"
-DB_USER = "sql12769379"
-DB_PASSWORD = "XjSDiyttDc"
-DB_NAME = "sql12769379"
+DB_HOST = os.environ.get("DB_HOST")
+DB_USER = os.environ.get("DB_USER")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_NAME = os.environ.get("DB_NAME")
 
 # Function to store data in MySQL
 def store_data(temp, humidity, wind_speed, timestamp):
